@@ -7,13 +7,11 @@ import { accountsAtom } from '@/data'
 export const Layout = memo(() => {
   console.log('--rendering: Layout')
 
-  const accounts = useAtomValue(accountsAtom)
-  console.log('accounts', accounts)
   // const rootMatch = !!useMatch({ path: '/app', end: true })
 
-  const accountMatch = useMatch({ path: '/app/:accountSlug' })
-  // const accountsMatch = useMatch({ path: '/app' })
-  console.log('accountMatch', accountMatch)
+  // const accountMatch = useMatch({ path: '/app/:accountSlug' })
+  // // const accountsMatch = useMatch({ path: '/app' })
+  // console.log('accountMatch', accountMatch)
 
   return (
     <div className="drawer lg:drawer-open">
@@ -31,17 +29,35 @@ export const Layout = memo(() => {
         <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay" />
 
         <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4 mt-0">
-          <Suspense fallback={<li>loading...</li>}>
-            {accounts && <li>Accounts</li>}
+          <Suspense fallback={<span className="loading loading-dots loading-md" />}>
+            {<li>Accounts</li>}
+            <AccountList />
             {/* @ts-ignore */}
-            {accounts?.map(account => (
+            {/* {accounts?.map(account => (
               <li key={account.id}>
                 <NavLink to={`/app/${account.slug}`}>{account.name}</NavLink>
               </li>
-            ))}
+            ))} */}
           </Suspense>
         </ul>
       </div>
+    </div>
+  )
+})
+
+const AccountList = memo(() => {
+  // const accounts = useAtomValue(accountsAtom)
+  console.log('rendering AccountList')
+  const accounts = useAtomValue(accountsAtom)
+  console.log('accounts', accounts)
+
+  return (
+    <div>
+      {(accounts as any)?.map((account: any) => (
+        <li key={account.id}>
+          <NavLink to={`/app/${account.slug}`}>{account.name}</NavLink>
+        </li>
+      ))}
     </div>
   )
 })

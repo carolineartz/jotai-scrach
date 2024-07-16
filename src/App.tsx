@@ -17,11 +17,14 @@ import { appStore } from './store'
 import { parseResourceURLParams } from './external/params-parser'
 import { Layout } from '@/components/layout'
 import { DevTools as JotaiDevTools } from 'jotai-devtools'
+import { useAtom } from 'jotai'
+import { atomWithProxy } from 'jotai-valtio'
+import { proxy } from 'valtio/vanilla'
 
 export const App = () => {
   console.log('--rendering: App')
-  useSyncLocation()
-  useSetNavigateAtom()
+  // useSyncLocation()
+  // useSetNavigateAtom()
 
   useEffectOnce(() => {
     appStore.sub(pathnameAtom, () => {
@@ -36,7 +39,7 @@ export const App = () => {
 
   return (
     <JotaiProvider store={appStore}>
-      <JotaiDevTools store={appStore} />
+      {/* <JotaiDevTools store={appStore} /> */}
       <Layout />
     </JotaiProvider>
   )
