@@ -1,4 +1,4 @@
-import { memo, Suspense, useEffect, useMemo, useState } from 'react'
+import { Fragment, memo, Suspense, useEffect, useMemo, useState } from 'react'
 import { NavLink, Outlet, useLocation, useMatch } from 'react-router-dom'
 import { PrimitiveAtom, Provider as JotaiProvider, useAtom, useAtomValue } from 'jotai'
 
@@ -68,9 +68,7 @@ const LayoutContent = memo(() => {
                 >
                   Accounts
                 </span>
-                <ul className={`menu-dropdown ${accountsOpen ? 'menu-dropdown-show' : ''}`}>
-                  <SidebarAccountNav />
-                </ul>
+                <SidebarAccountNav open={accountsOpen} />
               </li>
             </Suspense>
           </ul>
@@ -80,18 +78,18 @@ const LayoutContent = memo(() => {
   )
 })
 
-const SidebarAccountNav = () => {
+const SidebarAccountNav = memo(({ open }: { open: boolean }) => {
   console.log('--rendering SidebarAccountNav')
   const accountAtoms = useAtomValue(accountAtomsAtom)
 
   return (
-    <>
+    <ul className={`menu-dropdown ${open ? 'menu-dropdown-show' : ''}`}>
       {accountAtoms.map(accountAtom => {
         return <NavItem key={accountAtom.toString()} accountAtom={accountAtom} />
       })}
-    </>
+    </ul>
   )
-}
+})
 
 const NavItem = memo((props: { accountAtom: PrimitiveAtom<Account> }) => {
   const { accountAtom } = props
