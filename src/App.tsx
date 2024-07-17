@@ -20,22 +20,40 @@ import { DevTools as JotaiDevTools } from 'jotai-devtools'
 import { useAtom } from 'jotai'
 import { atomWithProxy } from 'jotai-valtio'
 import { proxy } from 'valtio/vanilla'
+import { useLocation } from 'react-router-dom'
+import { useEffect, useRef } from 'react'
 
 export const App = () => {
   console.log('--rendering: App')
+  const location = useRef(useLocation())
   // useSyncLocation()
   // useSetNavigateAtom()
 
   useEffectOnce(() => {
-    appStore.sub(pathnameAtom, () => {
-      const params = parseResourceURLParams(appStore.get(pathnameAtom))
+    const hashChanged = () => {
+      console.log('hashchanged')
+    }
+    window.addEventListener('hashchange', hashChanged)
 
-      appStore.set(productIdAtom, params.productId)
-      appStore.set(accountSlugAtom, params.accountSlug)
-      appStore.set(personIdAtom, params.personId)
-      appStore.set(reviewIdAtom, params.productReviewId)
-    })
+    const popState = () => {
+      console.log('popstate')
+    }
+
+    window.addEventListener('popstate', popState)
+
+    return () => {
+      window.removeEventListener('hashchange', hashChanged)
+      window.removeEventListener('popstate', popState)
+    }
   })
+
+  useEffect(() => {
+    console.log('location', location.current)
+  }, [location.current])
+
+  useEffect(() => {
+    console.log('location', location)
+  }, [location])
 
   return (
     <JotaiProvider store={appStore}>

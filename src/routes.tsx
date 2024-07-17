@@ -4,12 +4,11 @@ import * as Page from '@/components/pages'
 
 export const ROUTE_DEFINITIONS: RouteObject[] = [
   {
-    path: '/',
-    loader: () => redirect('/app')
-  },
-  {
     path: '/app',
     element: <App />,
+    loader: async () => {
+      return {}
+    },
     children: [
       {
         path: ':accountSlug',
