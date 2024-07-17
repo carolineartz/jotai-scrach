@@ -2,6 +2,7 @@ import { atom } from 'jotai'
 import * as api from '../api'
 import { focusAtom } from 'jotai-optics'
 import { atomWithLazy, splitAtom, unwrap } from 'jotai/utils'
+import { Account } from './data-types'
 
 export const accountsResponseAtom = atomWithLazy(async () => {
   const response = await api.getAccounts()
@@ -23,7 +24,7 @@ export const accountsAtom: WritableAtom<api.GetAccountsResponseAccounts> = focus
 
 accountsAtom.debugLabel = 'accountsAtom'
 
-export const accountAtomsAtom = splitAtom(accountsAtom)
+export const accountAtomsAtom = splitAtom<Account, number>(accountsAtom, account => account.id)
 accountAtomsAtom.debugLabel = 'accountAtomsAtom'
 
 // import { atom } from 'jotai'

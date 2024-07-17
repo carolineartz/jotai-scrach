@@ -1,14 +1,15 @@
 import { redirect, RouteObject } from 'react-router-dom'
-import { App } from './app'
+import { App } from './app-file'
 import * as Page from '@/components/pages'
+import { Layout } from './components/layout'
 
 export const ROUTE_DEFINITIONS: RouteObject[] = [
   {
     path: '/app',
-    element: <App />,
-    loader: async () => {
-      return {}
-    },
+    element: <Layout />,
+    // loader: async () => {
+    //   return {}
+    // },
     children: [
       {
         path: ':accountSlug',
@@ -21,3 +22,5 @@ export const ROUTE_DEFINITIONS: RouteObject[] = [
     ]
   }
 ]
+
+// export const Routes =
